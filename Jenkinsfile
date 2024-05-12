@@ -18,35 +18,33 @@ pipeline {
                 }
             }
             steps {
-                {
-                    sh '''java -jar /opt/veracode/api-wrapper.jar 
-                        -vid ${VERACODE_API_ID}
-                        -vkey ${VERACODE_API_KEY} 
-                        -action UploadAndScan
-                        -createprofile false
-                        -appname "Verademo"
-                        -version ${BUILD_NUMBER}
-                        -filepath 'app/target/verademo.war'
-                        -scantimeout 60'''
+                sh '''java -jar /opt/veracode/api-wrapper.jar 
+                    -vid ${VERACODE_API_ID}
+                    -vkey ${VERACODE_API_SECRET} 
+                    -action UploadAndScan
+                    -createprofile false
+                    -appname "Verademo"
+                    -version ${BUILD_NUMBER}
+                    -filepath 'app/target/verademo.war'
+                    -scantimeout 60'''
 
-                    sh '''java -jar /opt/veracode/api-wrapper.jar 
-                        -vid ${VERACODE_API_ID}
-                        -vkey ${VERACODE_API_KEY} 
-                        -action getapplist'''
+                sh '''java -jar /opt/veracode/api-wrapper.jar 
+                    -vid ${VERACODE_API_ID}
+                    -vkey ${VERACODE_API_SECRET} 
+                    -action getapplist'''
 
-                    sh '''java -jar /opt/veracode/api-wrapper.jar 
-                        -vid ${VERACODE_API_ID}
-                        -vkey ${VERACODE_API_KEY} 
-                        -action getbuildlist
-                        -appid <the_app_id>'''
+                sh '''java -jar /opt/veracode/api-wrapper.jar 
+                    -vid ${VERACODE_API_ID}
+                    -vkey ${VERACODE_API_SECRET} 
+                    -action getbuildlist
+                    -appid <the_app_id>'''
 
-                    sh '''java -jar /opt/veracode/api-wrapper.jar 
-                        -vid ${VERACODE_API_ID}
-                        -vkey ${VERACODE_API_KEY} 
-                        -action detailedreport
-                        -buildid <build_id>
-                        -format pdf'''
-                }
+                sh '''java -jar /opt/veracode/api-wrapper.jar 
+                    -vid ${VERACODE_API_ID}
+                    -vkey ${VERACODE_API_SECRET} 
+                    -action detailedreport
+                    -buildid <build_id>
+                    -format pdf'''
             }
         }
     }
