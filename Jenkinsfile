@@ -18,7 +18,7 @@ pipeline {
                 }
             }
             steps {
-                sh '''java -jar /opt/veracode/api-wrapper.jar 
+                sh '''
                     -vid ${VERACODE_API_ID}
                     -vkey ${VERACODE_API_SECRET} 
                     -action UploadAndScan
