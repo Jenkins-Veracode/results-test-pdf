@@ -18,7 +18,7 @@ pipeline {
                 }
             }
             steps {
-                withCredentials([usernamePassword(credentialsId: 'veracode-credentials', passwordVariable: 'VERACODE_API_KEY', usernameVariable: 'VERACODE_API_ID')]) {
+                // withCredentials([usernamePassword(credentialsId: 'veracode-credentials', passwordVariable: 'VERACODE_API_KEY', usernameVariable: 'VERACODE_API_ID')]) {
                     sh '''java -jar /opt/veracode/api-wrapper.jar 
                         -vid ${VERACODE_API_ID}
                         -vkey ${VERACODE_API_KEY} 
