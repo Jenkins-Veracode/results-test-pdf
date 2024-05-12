@@ -12,47 +12,40 @@ pipeline {
 
     stages {
         stage('Veracode Policy from Wrapper') {
+            agent {
+                docker { 
+                    image 'veracode/api-wrapper-java' 
+                }
+            }
             steps {
-                script {
-                    // Use sudo with Docker commands
-                    sh 'sudo docker pull veracode/api-wrapper-java'
-                    docker.image('veracode/api-wrapper-java').inside {
-                        withCredentials([usernamePassword(credentialsId: 'veracode-credentials-id', passwordVariable: 'VERACODE_API_KEY', usernameVariable: 'VERACODE_API_ID')]) {
-                            // Add sudo before each Docker command
-                            sh """
-                                sudo java -jar /opt/veracode/api-wrapper.jar 
-                                    -vid ${VERACODE_API_ID}
-                                    -vkey ${VERACODE_API_KEY} 
-                                    -action UploadAndScan
-                                    -createprofile false
-                                    -appname "Verademo"
-                                    -version \${BUILD_NUMBER}
-                                    -filepath 'app/target/verademo.war'
-                                    -scantimeout 60
-                            """
-                            sh """
-                                sudo java -jar /opt/veracode/api-wrapper.jar 
-                                    -vid ${VERACODE_API_ID}
-                                    -vkey ${VERACODE_API_KEY} 
-                                    -action getapplist
-                            """
-                            sh """
-                                sudo java -jar /opt/veracode/api-wrapper.jar 
-                                    -vid ${VERACODE_API_ID}
-                                    -vkey ${VERACODE_API_KEY} 
-                                    -action getbuildlist
-                                    -appid <the_app_id>
-                            """
-                            sh """
-                                sudo java -jar /opt/veracode/api-wrapper.jar 
-                                    -vid ${VERACODE_API_ID}
-                                    -vkey ${VERACODE_API_KEY} 
-                                    -action detailedreport
-                                    -buildid <build_id>
-                                    -format pdf
-                            """
-                        }
-                    }
+                withCredentials([usernamePassword(credentialsId: 'veracode-credentials', passwordVariable: 'VERACODE_API_KEY', usernameVariable: 'VERACODE_API_ID')]) {
+                    sh '''java -jar /opt/veracode/api-wrapper.jar 
+                        -vid ${VERACODE_API_ID}
+                        -vkey ${VERACODE_API_KEY} 
+                        -action UploadAndScan
+                        -createprofile false
+                        -appname "Verademo"
+                        -version ${BUILD_NUMBER}
+                        -filepath 'app/target/verademo.war'
+                        -scantimeout 60'''
+
+                    sh '''java -jar /opt/veracode/api-wrapper.jar 
+                        -vid ${VERACODE_API_ID}
+                        -vkey ${VERACODE_API_KEY} 
+                        -action getapplist'''
+
+                    sh '''java -jar /opt/veracode/api-wrapper.jar 
+                        -vid ${VERACODE_API_ID}
+                        -vkey ${VERACODE_API_KEY} 
+                        -action getbuildlist
+                        -appid <the_app_id>'''
+
+                    sh '''java -jar /opt/veracode/api-wrapper.jar 
+                        -vid ${VERACODE_API_ID}
+                        -vkey ${VERACODE_API_KEY} 
+                        -action detailedreport
+                        -buildid <build_id>
+                        -format pdf'''
                 }
             }
         }
