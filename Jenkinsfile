@@ -14,10 +14,13 @@ pipeline {
         stage('Veracode Policy from Wrapper') {
             steps {
                 script {
+                    // Use sudo with Docker commands
+                    sh 'sudo docker pull veracode/api-wrapper-java'
                     docker.image('veracode/api-wrapper-java').inside {
                         withCredentials([usernamePassword(credentialsId: 'veracode-credentials-id', passwordVariable: 'VERACODE_API_KEY', usernameVariable: 'VERACODE_API_ID')]) {
+                            // Add sudo before each Docker command
                             sh """
-                                java -jar /opt/veracode/api-wrapper.jar 
+                                sudo java -jar /opt/veracode/api-wrapper.jar 
                                     -vid ${VERACODE_API_ID}
                                     -vkey ${VERACODE_API_KEY} 
                                     -action UploadAndScan
@@ -28,20 +31,20 @@ pipeline {
                                     -scantimeout 60
                             """
                             sh """
-                                java -jar /opt/veracode/api-wrapper.jar 
+                                sudo java -jar /opt/veracode/api-wrapper.jar 
                                     -vid ${VERACODE_API_ID}
                                     -vkey ${VERACODE_API_KEY} 
                                     -action getapplist
                             """
                             sh """
-                                java -jar /opt/veracode/api-wrapper.jar 
+                                sudo java -jar /opt/veracode/api-wrapper.jar 
                                     -vid ${VERACODE_API_ID}
                                     -vkey ${VERACODE_API_KEY} 
                                     -action getbuildlist
                                     -appid <the_app_id>
                             """
                             sh """
-                                java -jar /opt/veracode/api-wrapper.jar 
+                                sudo java -jar /opt/veracode/api-wrapper.jar 
                                     -vid ${VERACODE_API_ID}
                                     -vkey ${VERACODE_API_KEY} 
                                     -action detailedreport
