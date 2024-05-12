@@ -14,7 +14,7 @@ pipeline {
         stage('Veracode Policy from Wrapper') {
             agent {
                 docker { 
-                    image 'veracode/api-wrapper-java' 
+                    image 'veracode/api-wrapper-java:latest' 
                 }
             }
             steps {
