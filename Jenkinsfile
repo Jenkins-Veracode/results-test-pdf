@@ -17,15 +17,16 @@ pipeline {
                     image 'veracode/api-wrapper-java' 
                 }
             }
-            steps {
-                sh '''java -jar /opt/veracode/api-wrapper.jar 
+          steps {
+              withCredentials([usernamePassword(credentialsId: 'veracode-credentials', passwordVariable: 'VERACODE_API_KEY', usernameVariable: 'VERACODE_API_ID')]) {
+                    sh '''java -jar /opt/veracode/api-wrapper.jar 
                         -vid ${VERACODE_API_ID}
-                        -vkey ${VERACODE_API_SECRET} 
+                        -vkey ${VERACODE_API_KEY} 
                         -action UploadAndScan
                         -createprofile false
-                        -appname "Verademo"
+                        -appname "Verademo Jenkins"
                         -version ${BUILD_NUMBER}
-                        -filepath 'app/target/verademo.war'
+                        -filepath verademo.war
                         -scantimeout 60'''
 
                 sh '''java -jar /opt/veracode/api-wrapper.jar 
@@ -46,6 +47,8 @@ pipeline {
                     -buildid <build_id>
                     -format pdf'''
             }
+          }
+          
         }
     }
 }
