@@ -28,8 +28,9 @@ pipeline {
             steps {
                 script {
                     def warFile = sh(script: 'find . -name "*.war"', returnStdout: true).trim()
-                    def warPermissions = sh(script: "ls -l $warFile", returnStdout: true).trim()
-                    echo "WAR file: $warFile"
+                    def absoluteWarFile = sh(script: 'pwd', returnStdout: true).trim() + '/' + warFile
+                    def warPermissions = sh(script: "ls -l $absoluteWarFile", returnStdout: true).trim()
+                    echo "WAR file: $absoluteWarFile"
                     echo "WAR file permissions: $warPermissions"
                 }
                 unstash 'warFile'
@@ -41,7 +42,7 @@ pipeline {
                     -createprofile false \
                     -appname "Verademo" \
                     -version ${BUILD_NUMBER} \
-                    -filepath $warFile \
+                    -filepath $absoluteWarFile \
                     -scantimeout 60
                 '''
             }
