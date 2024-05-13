@@ -14,7 +14,7 @@ pipeline {
             steps {
                 dir('app') {
                     sh 'mvn clean package'
-                    stash includes: 'app/target/*.jar', name: 'jarFiles'
+                    stash includes: 'target/*.jar', name: 'jarFiles'
                 }
             }
         }
@@ -35,7 +35,7 @@ pipeline {
                     -createprofile false \
                     -appname "Verademo" \
                     -version ${BUILD_NUMBER} \
-                    -filepath /opt/veracode/verademo.jar \
+                    -filepath /opt/veracode/app/target/verademo.jar \
                     -scantimeout 60
                 '''
             }
