@@ -26,6 +26,16 @@ pipeline {
                 }
             }
             steps {
+                script {
+                    def jarFilePath = sh(script: 'find . -name "*.jar"', returnStdout: true).trim()
+                    if (jarFilePath) {
+                        echo "Found JAR file: $jarFilePath"
+                        stash name: 'jarFiles', includes: jarFilePath
+                    } else {
+                        error "No JAR file found"
+                    }
+                }
+
                 unstash 'jarFiles'
                 sh '''
                 java -jar /opt/veracode/api-wrapper.jar \
