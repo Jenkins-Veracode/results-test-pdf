@@ -18,15 +18,16 @@ pipeline {
                 }
             }
             steps {
-                    sh '''java -jar /opt/veracode/api-wrapper.jar 
-                        -vid ${VERACODE_API_ID}
-                        -vkey ${VERACODE_API_KEY} 
-                        -action UploadAndScan
-                        -createprofile false
-                        -appname "Verademo Jenkins"
-                        -version ${BUILD_NUMBER}
-                        -filepath verademo.war
-                        -scantimeout 60'''
+                    sh '''
+                    java -jar /opt/veracode/api-wrapper.jar 
+                    -vid ${VERACODE_API_ID}
+                    -vkey ${VERACODE_API_SECRET} 
+                    -action UploadAndScan
+                    -createprofile false
+                    -appname "Verademo Jenkins"
+                    -version ${BUILD_NUMBER}
+                    -filepath verademo.war
+                    -scantimeout 60'''
 
                 sh '''java -jar /opt/veracode/api-wrapper.jar 
                     -vid ${VERACODE_API_ID}
