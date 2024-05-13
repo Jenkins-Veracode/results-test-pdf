@@ -17,8 +17,11 @@ pipeline {
                     image 'veracode/api-wrapper-java' 
                 }
             }
-          steps {
-              withCredentials([usernamePassword(credentialsId: 'veracode-credentials', passwordVariable: 'VERACODE_API_KEY', usernameVariable: 'VERACODE_API_ID')]) {
+            steps {
+                withCredentials([
+                    usernamePassword(credentialsId: 'veracode-id', passwordVariable: 'VERACODE_API_ID', usernameVariable: 'VERACODE_API_ID'),
+                    usernamePassword(credentialsId: 'veracode-key', passwordVariable: 'VERACODE_API_KEY', usernameVariable: 'VERACODE_API_KEY')
+                ]) {
                     sh '''java -jar /opt/veracode/api-wrapper.jar 
                         -vid ${VERACODE_API_ID}
                         -vkey ${VERACODE_API_KEY} 
@@ -48,7 +51,7 @@ pipeline {
                     -format pdf'''
             }
           }
-          
+
         }
     }
 }
