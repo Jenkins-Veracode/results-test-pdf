@@ -26,16 +26,6 @@ pipeline {
                 }
             }
             steps {
-                script {
-                    def warFilePath = sh(script: 'find . -name "*.war"', returnStdout: true).trim()
-                    if (warFilePath) {
-                        echo "Found WAR file: $warFilePath"
-                        stash name: 'warFile', includes: warFilePath
-                    } else {
-                        error "No WAR file found"
-                    }
-                }
-
                 unstash 'warFile'
                 sh '''
                 java -jar /opt/veracode/api-wrapper.jar \
@@ -45,7 +35,7 @@ pipeline {
                     -createprofile false \
                     -appname "Verademo" \
                     -version ${BUILD_NUMBER} \
-                    -filepath /opt/veracode/app/target/verademo.jar \
+                    -filepath /opt/veracode/app/target/verademo.war \
                     -scantimeout 60
                 '''
             }
