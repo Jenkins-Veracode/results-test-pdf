@@ -42,7 +42,7 @@ pipeline {
                     -createprofile false \
                     -appname "Verademo" \
                     -version ${BUILD_NUMBER} \
-                    -filepath $absoluteWarFile \
+                    -filepath "$absoluteWarFile" \
                     -scantimeout 60
                 '''
             }
