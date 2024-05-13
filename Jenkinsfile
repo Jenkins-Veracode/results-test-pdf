@@ -63,9 +63,10 @@ pipeline {
                     
                 sh '''
                 java -jar /opt/veracode/api-wrapper.jar \
-                    -vid ${VERACODE_API_ID} \
-                    -vkey ${VERACODE_API_KEY} \
+                    -vid '9c42b4bd8abf978e9dc1667451778c58' \
+                    -vkey '568e7bd345890259c3e869c8da3d42597b815e6a780c5d72ce76eaf3045a1736d80eb0ced53eb61956b3f0410546b2ac6e681829eaa3c9c621fcd722cee60b14' \
                     -action detailedreport \
+                    -outputfilepath ./target
                     -buildid '36059821' \
                     -format pdf
                 '''
