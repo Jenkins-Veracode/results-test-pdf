@@ -14,7 +14,7 @@ pipeline {
             steps {
                 dir('app') {
                     sh 'mvn clean package'
-                    stash includes: 'target/*.jar', name: 'jarFiles'
+                    // stash includes: 'target/*.jar', name: 'jarFiles'
                 }
             }
         }
