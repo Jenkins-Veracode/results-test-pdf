@@ -27,8 +27,10 @@ pipeline {
             }
             steps {
                 script {
-                    def stashedFiles = sh(script: 'ls -lR', returnStdout: true).trim()
-                    echo "Stashed files: $stashedFiles"
+                    def warFile = sh(script: 'find . -name "*.war"', returnStdout: true).trim()
+                    def warPermissions = sh(script: "ls -l $warFile", returnStdout: true).trim()
+                    echo "WAR file: $warFile"
+                    echo "WAR file permissions: $warPermissions"
                 }
                 unstash 'warFile'
                 sh '''
@@ -39,7 +41,7 @@ pipeline {
                     -createprofile false \
                     -appname "Verademo" \
                     -version ${BUILD_NUMBER} \
-                    -filepath /opt/veracode/target/verademo.war \
+                    -filepath $warFile \
                     -scantimeout 60
                 '''
             }
