@@ -43,8 +43,26 @@ pipeline {
                     -appname "Verademo" \
                     -version ${BUILD_NUMBER} \
                     -filepath "./target/verademo.war" \
-                    -scantimeout 60
+                    -scantimeout 180
                 '''
+
+                sh '''java -jar /opt/veracode/api-wrapper.jar 
+                        -vid ${VERACODE_API_ID}
+                        -vkey ${VERACODE_API_KEY} 
+                        -action getapplist'''
+                        
+                sh '''java -jar /opt/veracode/api-wrapper.jar 
+                    -vid ${VERACODE_API_ID}
+                    -vkey ${VERACODE_API_KEY} 
+                    -action getbuildlist
+                    -appid <the_app_id>'''
+                    
+                sh '''java -jar /opt/veracode/api-wrapper.jar 
+                    -vid ${VERACODE_API_ID}
+                    -vkey ${VERACODE_API_KEY} 
+                    -action detailedreport
+                    -buildid <build_id>
+                    -format pdf'''
             }
         }
     }
