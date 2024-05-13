@@ -26,6 +26,10 @@ pipeline {
                 }
             }
             steps {
+                script {
+                    def stashedFiles = sh(script: 'ls -lR', returnStdout: true).trim()
+                    echo "Stashed files: $stashedFiles"
+                }
                 unstash 'warFile'
                 sh '''
                 java -jar /opt/veracode/api-wrapper.jar \
