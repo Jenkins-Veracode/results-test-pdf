@@ -39,7 +39,7 @@ pipeline {
                     -createprofile false \
                     -appname "Verademo" \
                     -version ${BUILD_NUMBER} \
-                    -filepath /opt/veracode/app/target/verademo.war \
+                    -filepath /opt/veracode/target/verademo.war \
                     -scantimeout 60
                 '''
             }
