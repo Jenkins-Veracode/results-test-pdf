@@ -43,7 +43,7 @@ pipeline {
                     -appname "Verademo" \
                     -version ${BUILD_NUMBER} \
                     -filepath "./target/verademo.war" \
-                    -canFailJob false \
+                    -canfailjob "false" \
                     -scantimeout 180
                 '''
 
