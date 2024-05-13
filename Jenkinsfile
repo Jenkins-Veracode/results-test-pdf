@@ -18,8 +18,7 @@ pipeline {
                 }
             }
             steps {
-                sh '''
-                    - java -jar /opt/veracode/api-wrapper.jar
+                sh '''java -jar /opt/veracode/api-wrapper.jar 
                         -vid ${VERACODE_API_ID}
                         -vkey ${VERACODE_API_SECRET} 
                         -action UploadAndScan
@@ -27,8 +26,7 @@ pipeline {
                         -appname "Verademo"
                         -version ${BUILD_NUMBER}
                         -filepath 'app/target/verademo.war'
-                        -scantimeout 60
-                    '''
+                        -scantimeout 60'''
 
                 sh '''java -jar /opt/veracode/api-wrapper.jar 
                     -vid ${VERACODE_API_ID}
