@@ -66,7 +66,7 @@ pipeline {
                     -vid ${VERACODE_API_ID} \
                     -vkey ${VERACODE_API_KEY} \
                     -action detailedreport \
-                    -buildid <build_id> \
+                    -buildid '36059821' \
                     -format pdf
                 '''
             }
